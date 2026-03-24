@@ -7,6 +7,7 @@ import { Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 async function getBlogs() {
+
     try {
         const results = await db
             .select()
@@ -24,6 +25,9 @@ export const metadata = {
     title: "AI Blogs — TrendPulse",
     description: "Browse curated AI-generated insights from trending news.",
 };
+
+export const dynamic = "force-dynamic";
+
 
 export default async function BlogsPage() {
     const allBlogs = await getBlogs();

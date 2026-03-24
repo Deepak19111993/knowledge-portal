@@ -21,6 +21,9 @@ export const metadata = {
     description: "Browse our complete archive of AI-generated insights and trend reports.",
 };
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AllBlogsPage() {
     const allBlogs = await getAllBlogs();
 

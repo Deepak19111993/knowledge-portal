@@ -5,6 +5,8 @@ import Link from "next/link";
 import { BookOpen, ArrowRight, Sparkles, LayoutGrid } from "lucide-react";
 import BlogCard from "@/components/blog-card";
 
+export const dynamic = "force-dynamic";
+
 async function getLatestBlogs() {
     try {
         const results = await db
@@ -141,4 +143,3 @@ export default async function HomePage() {
         </div>
     );
 }
-
