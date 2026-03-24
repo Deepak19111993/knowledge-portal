@@ -34,7 +34,7 @@ export default async function HomePage() {
     const latestBlogs = await getLatestBlogs();
 
     return (
-        <div className="relative min-h-screen">
+        <div className="relative">
             {/* Background Texture/Pattern */}
             <div className="absolute inset-0 pointer-events-none -z-10 bg-background opacity-90" />
 
