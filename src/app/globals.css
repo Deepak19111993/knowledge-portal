@@ -1,0 +1,346 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FAF6EF;
+  --color-surface: #FFF9F0;
+  --color-foreground: #1A0A05;
+  --color-card: #FFF9F0;
+  --color-card-hover: #FDF9F2;
+  --color-card-border: rgba(196, 168, 130, 0.3);
+  --color-card-border-hover: rgba(107, 30, 20, 0.4);
+  --color-primary: #6B1E14;
+  --color-primary-light: #8A2D20;
+  --color-secondary: #E8A020;
+  --color-tertiary: #2D6A4F;
+  --color-accent: #1B7A7A;
+  --color-industry: #2C2C6B;
+  --color-muted: #C4A882;
+  --color-muted-foreground: #5C4A3A;
+  --color-gradient-start: #6B1E14;
+  --color-gradient-mid: #E8A020;
+  --color-gradient-end: #2D6A4F;
+  --font-serif-display: "DM Sans", sans-serif;
+  --font-serif-body: "DM Sans", sans-serif;
+  --font-sans: "DM Sans", sans-serif;
+  --font-serif: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.3);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.5);
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--color-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-card-border);
+  }
+
+  .glass-hover:hover {
+    background: var(--color-card-hover);
+    border-color: var(--color-card-border-hover);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15),
+                0 0 0 1px rgba(99, 102, 241, 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-mid), var(--color-gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .glow {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15),
+                0 0 60px rgba(99, 102, 241, 0.05);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  .blog-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-foreground);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-muted);
+  }
+
+  .blog-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-foreground);
+  }
+
+  .blog-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-muted-foreground);
+  }
+
+  .blog-content ul,
+  .blog-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+    color: var(--color-muted-foreground);
+  }
+
+  .blog-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .blog-content blockquote {
+    border-left: 3px solid var(--color-primary);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: var(--color-primary-light);
+    font-style: italic;
+  }
+
+  .blog-content strong {
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+
+  .blog-content em {
+    color: var(--color-secondary);
+  }
+
+  .blog-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+
+  .blog-content a:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* Hotfix for blogs generated with old tech-blue theme */
+  .blog-content h3.text-white,
+  .blog-content .text-white {
+    color: var(--color-foreground) !important;
+  }
+
+  .blog-content .border-\[rgba\(99\,102\,241\,0\.2\)\] {
+    border-color: var(--color-muted) !important;
+    opacity: 0.3;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ===== Animated Logo Styles ===== */
+
+.animated-logo {
+  transition: transform 0.3s ease;
+}
+
+.animated-logo:hover {
+  transform: scale(1.08);
+}
+
+/* Leaf entrance: grow in from sides */
+.logo-leaf--left {
+  transform-origin: 60px 85px;
+  animation: leafGrowLeft 1s ease-out 0.2s both;
+}
+
+.logo-leaf--right {
+  transform-origin: 60px 85px;
+  animation: leafGrowRight 1s ease-out 0.35s both;
+}
+
+/* Feather entrance: fade & rotate in */
+.logo-feather--left {
+  transform-origin: 42px 18px;
+  animation: featherLeft 0.8s ease-out 0.6s both;
+}
+
+.logo-feather--right {
+  transform-origin: 78px 18px;
+  animation: featherRight 0.8s ease-out 0.7s both;
+}
+
+/* Book entrance: slide up & fade in */
+.logo-book {
+  animation: bookReveal 0.7s ease-out 0.1s both;
+}
+
+/* Network entrance: scale + fade, slightly delayed */
+.logo-network {
+  transform-origin: 60px 48px;
+  animation: networkReveal 0.9s ease-out 0.5s both;
+}
+
+/* Light burst entrance */
+.logo-burst {
+  transform-origin: 60px 58px;
+  animation: burstReveal 1.2s ease-out 0.8s both;
+}
+
+/* Border draw */
+.logo-border {
+  stroke-dasharray: 330;
+  stroke-dashoffset: 330;
+  animation: borderDraw 1.5s ease-out 0.3s forwards;
+}
+
+/* Continuous subtle breathing on leaves */
+.logo-leaf--left,
+.logo-leaf--right {
+  animation-fill-mode: both;
+}
+
+.animated-logo--active .logo-leaf--left {
+  animation: leafGrowLeft 1s ease-out 0.2s both, leafBreathLeft 4s ease-in-out 1.5s infinite;
+}
+
+.animated-logo--active .logo-leaf--right {
+  animation: leafGrowRight 1s ease-out 0.35s both, leafBreathRight 4s ease-in-out 1.8s infinite;
+}
+
+@keyframes leafGrowLeft {
+  0% { opacity: 0; transform: scale(0.3) rotate(20deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes leafGrowRight {
+  0% { opacity: 0; transform: scale(0.3) rotate(-20deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes featherLeft {
+  0% { opacity: 0; transform: rotate(-30deg) translateY(5px); }
+  100% { opacity: 1; transform: rotate(0deg) translateY(0); }
+}
+
+@keyframes featherRight {
+  0% { opacity: 0; transform: rotate(30deg) translateY(5px); }
+  100% { opacity: 1; transform: rotate(0deg) translateY(0); }
+}
+
+@keyframes bookReveal {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes networkReveal {
+  0% { opacity: 0; transform: scale(0.4); }
+  60% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes burstReveal {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+@keyframes borderDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes leafBreathLeft {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.02) rotate(-1.5deg); }
+}
+
+@keyframes leafBreathRight {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.02) rotate(1.5deg); }
+}
+
+/* ===== Brand Text Letter Animation ===== */
+
+.brand-letter-v2 {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.6);
+  filter: blur(5px);
+  transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.35s ease-out;
+}
+
+.brand-letter-v2--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+
