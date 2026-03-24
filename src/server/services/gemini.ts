@@ -26,51 +26,54 @@ export async function generateBlogFromTopic(
     });
 
     const categoryInstruction = requestedCategory
-        ? `IMPORTANT: you are a best and professional blog writer of "${requestedCategory}" category. You MUST write this blog post from the perspective of the "${requestedCategory}" category. Tailor the content, insights, and tone specifically to fit the "${requestedCategory}" category. The "category" field in your JSON MUST be exactly "${requestedCategory}".`
-        : `Choose the most appropriate category for this topic from the list below.`;
+        ? `IMPORTANT: you are a globally recognized expert and professional research analyst specializing in the "${requestedCategory}" sector. You MUST write this blog post from the perspective of an industry authority in "${requestedCategory}". 
+        - If "Agriculture": Focus on yield optimization, soil conservation, climate-resilient crops, and ROI for small-scale farmers.
+        - If "Health": Focus on preventative measures, evidence-based wellness, nutrition science, and mental health accessibility.
+        - If "Education": Focus on pedagogy, future skills (AI/STEM), literacy, and equal access to learning resources.
+        - If "Sports": Focus on the physiology of performance, community participation, and the social impact of major sporting events.
+        - If "Politics": Focus on public policy impact, civic responsibility, and transparent governance.
+        
+        The "category" field in your JSON MUST be exactly "${requestedCategory}".`
+        : `Choose the most appropriate category for this topic from: Agriculture, Health, Education, Sports, Politics.`;
 
-    const prompt = `You are an expert Deep Research Analyst and professional blog writer. Your mission is to write the MOST KNOWLEDGEABLE and ACCURATE blog post possible based on the topic below.
+    const prompt = `You are an elite Research Journalist. Your goal is to write a blog post that provides IMMENSE VALUE and PRACTICAL KNOWLEDGE to the reader. 
     
     Topic: "${topic}"
-    Source: ${source}
+    Source Context: ${source}
     
     ${categoryInstruction}
     
-    CRITICAL VISUAL INSTRUCTION:
-    - ONLY provide ONE highly professional cover image for the entire blog.
-    - DO NOT include ANY images within the <body> of the content. ALL content images are disallowed.
-    - Focus 100% of your visual effort on the "coverImage" field.
+    CONTENT STRUCTURE REQUIREMENTS (MUST BE IN THE "content" FIELD):
+    1. **Deep Analysis**: Start with a sophisticated overview of the topic.
+    2. **Key Insights**: Use <h3> headings to break down the most important data points or trends.
+    3. **Key Takeaways & Action Plans**: Include a section titled "What This Means For You" or "Actionable Steps". Provide at least 3-4 concrete things the reader can do or understand better based on this information.
+    4. **Global Perspective**: Briefly mention how this topic affects different regions (especially looking toward localized impact).
     
-    RESEARCH INSTRUCTIONS:
-    - Act as if you are "scraping" and researching the latest scientific papers, industry reports, and expert consensus for this topic.
-    - If the category is "Agriculture", focus on soil health, yield optimization, and modern sustainable practices.
-    - If "Health", focus on clinical accuracy, recent medical breakthroughs, and well-being.
-    - Ensure EVERY fact is cross-referenced with your internal high-quality knowledge base.
-    - DO NOT HALLUCINATE. If a specific data point is unknown, provide expert-level general principles instead.
+    CRITICAL QUALITY RULES:
+    - Act as if you have "scraped" and researched the latest 2026 data and scientific papers.
+    - NO GENERIC FILLER. Every paragraph must contain a specific fact, expert opinion, or logical deduction.
+    - Word count: At least 1000 words.
+    - Tone: Authoritative, educational, and empathetic.
+    - Format: Use high-quality HTML (<h2>, <h3>, <p>, <ul>, <li>, <blockquote>). 
+    - NO images in <body>.
 
-CRITICAL RULES:
-1. The content MUST be 100% original and FACTUALLY ACCURATE. DO NOT copy-paste. Verify all historical, scientific, or industry-specific information. Write in a deep, analytical, and professional voice.
-2. The content MUST be highly SEO-optimized. Include natural keyword variations, strong headings, and a compelling structure.
-3. You MUST provide deep, accurate knowledge and educational value for the readers. Avoid generic filler. Provide real insights.
-4. IMPORTANT: DO NOT include any <img> tags in the "content" field. The "content" should only be text, headings, and lists.
-
- Return your response as a valid JSON object with these exact fields:
- {
-   "title": "An engaging, SEO-friendly blog title",
-   "slug": "url-friendly-slug-for-the-title",
-   "excerpt": "A compelling 2-3 sentence summary for the blog card preview",
-   "content": "Full blog post content in HTML format. Use <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong>, <em> tags. IMPORTANT: DO NOT INCLUDE ANY <img> TAGS HERE. Make it at least 800 words, well-structured with sections, and include relevant insights and analysis.",
-   "category": "One of: Agriculture, Health, Education, Sports, Politics",
-   "coverImage": "A valid image URL using the format https://image.pollinations.ai/prompt/{prompt}?width=1200&height=630&seed={seed} where {prompt} is a VIVID, HIGHLY DESCRIPTIVE prompt about the topic that MUST end with 'photorealistic, 8k resolution, DSLR, cinematic lighting, national geographic style' and {seed} is a random integer.",
-   "quiz": [
-     {
-       "question": "A multiple choice question about a key fact or insight in the blog",
-       "options": ["Option A", "Option B", "Option C", "Option D"],
-       "answer": 0
-     }
-   ]
- }
- Return exactly 5 questions in the "quiz" array. Each question MUST have exactly 4 options. The "answer" field MUST be the 0-indexed integer of the correct option.`;
+    Return your response as a valid JSON object with these exact fields:
+    {
+      "title": "A sophisticated, high-authority blog title",
+      "slug": "url-friendly-slug",
+      "excerpt": "A high-value 2-paragraph summary that entices the reader with a clear value proposition.",
+      "content": "The full 1000+ word HTML blog content. DO NOT INCLUDE ANY <img> TAGS.",
+      "category": "The selected category",
+      "coverImage": "https://image.pollinations.ai/prompt/{prompt}?width=1200&height=630&seed={seed} where {prompt} is a VIVID, HIGHLY DESCRIPTIVE prompt about the topic ending with 'photorealistic, 8k resolution, DSLR, cinematic lighting, national geographic style' and {seed} is a random integer.",
+      "quiz": [
+        {
+          "question": "A challenging but fair question about a specific fact in the blog",
+          "options": ["Option A", "Option B", "Option C", "Option D"],
+          "answer": 0
+        }
+      ]
+    }
+    Return exactly 5 questions in the "quiz" array. Each question MUST have exactly 4 options.`;
 
     const result = await model.generateContent({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -81,8 +84,6 @@ CRITICAL RULES:
 
     // Clean up potential markdown formatting
     let cleanedText = text.trim();
-    // With responseMimeType: "application/json", the model should directly output JSON,
-    // so these cleanup steps are less likely to be needed but kept for robustness
     if (cleanedText.startsWith("```json")) {
         cleanedText = cleanedText.slice(7);
     }
@@ -146,9 +147,9 @@ Return your response as a valid JSON object with these exact fields:
     const text = response.text();
 
     let cleanedText = text.trim();
-    if (cleanedText.startsWith("\`\`\`json")) cleanedText = cleanedText.slice(7);
-    if (cleanedText.startsWith("\`\`\`")) cleanedText = cleanedText.slice(3);
-    if (cleanedText.endsWith("\`\`\`")) cleanedText = cleanedText.slice(0, -3);
+    if (cleanedText.startsWith("```json")) cleanedText = cleanedText.slice(7);
+    if (cleanedText.startsWith("```")) cleanedText = cleanedText.slice(3);
+    if (cleanedText.endsWith("```")) cleanedText = cleanedText.slice(0, -3);
 
     try {
         return JSON.parse(cleanedText) as TranslationResult;
@@ -168,19 +169,16 @@ Always be helpful but prioritize cultural accuracy. Frame your answers engagingl
         systemInstruction: systemInstruction,
     });
 
-    // Gemini history MUST start with a 'user' message. 
-    // Our UI might start with a 'model' greeting which would cause an error.
     let chatHistory = history.map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }]
     }));
 
-    // Find the first 'user' message and slice history from there
     const firstUserIndex = chatHistory.findIndex(msg => msg.role === 'user');
     if (firstUserIndex !== -1) {
         chatHistory = chatHistory.slice(firstUserIndex);
     } else {
-        chatHistory = []; // No user messages yet
+        chatHistory = [];
     }
 
     const chat = model.startChat({
@@ -223,9 +221,9 @@ Return ONLY a valid JSON array of objects with these exact fields:
     const text = response.text();
 
     let cleanedText = text.trim();
-    if (cleanedText.startsWith("\`\`\`json")) cleanedText = cleanedText.slice(7);
-    if (cleanedText.startsWith("\`\`\`")) cleanedText = cleanedText.slice(3);
-    if (cleanedText.endsWith("\`\`\`")) cleanedText = cleanedText.slice(0, -3);
+    if (cleanedText.startsWith("```json")) cleanedText = cleanedText.slice(7);
+    if (cleanedText.startsWith("```")) cleanedText = cleanedText.slice(3);
+    if (cleanedText.endsWith("```")) cleanedText = cleanedText.slice(0, -3);
 
     try {
         return JSON.parse(cleanedText) as Flashcard[];
@@ -256,5 +254,5 @@ Rules:
         contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
     const response = result.response;
-    return response.text().trim().replace(/^"|"$/g, ''); // Remove potential quotes
+    return response.text().trim().replace(/^"|"$/g, '');
 }
