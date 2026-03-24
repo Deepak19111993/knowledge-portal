@@ -1,31 +1,20 @@
+import { db } from "@/server/db";
+import { articles as blogs } from "@/server/db/schema";
+import { desc } from "drizzle-orm";
 import Link from "next/link";
 import { BookOpen, ArrowRight, Sparkles, LayoutGrid } from "lucide-react";
 import BlogCard from "@/components/blog-card";
 
-interface Blog {
-    id: number;
-    title: string;
-    slug: string;
-    excerpt: string;
-    content: string;
-    coverImage: string | null;
-    module: string;
-    author: string | null;
-    readTime: number | null;
-    views: number | null;
-    createdAt: string;
-}
-
-async function getLatestBlogs(): Promise<Blog[]> {
+async function getLatestBlogs() {
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-        const res = await fetch(`${baseUrl}/api/blogs?limit=6`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return [];
-        const data = await res.json();
-        return data.data || [];
-    } catch {
+        const results = await db
+            .select()
+            .from(blogs)
+            .orderBy(desc(blogs.createdAt))
+            .limit(6);
+        return results;
+    } catch (error) {
+        console.error("Error fetching latest blogs:", error);
         return [];
     }
 }
@@ -39,7 +28,7 @@ export default async function HomePage() {
             <div className="absolute inset-0 pointer-events-none -z-10 bg-background opacity-90" />
 
             {/* Hero Section */}
-            <section className="relative pt-10 pb-10 lg:pt-15 lg:pb-15 border-b border-muted/20">
+            <section className="relative pt-10 pb-10 lg:pt-20 lg:pb-20 border-b border-muted/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 mb-8 animate-float">
@@ -55,9 +44,6 @@ export default async function HomePage() {
                     <p className="text-lg sm:text-2xl text-muted-foreground font-serif max-w-3xl mx-auto mb-12 leading-relaxed">
                         A dual-purpose AI platform dedicated to cultural preservation and empowering communities through high-quality localized research.
                     </p>
-
-
-
 
                     {/* Dual Entry Points */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
@@ -103,7 +89,7 @@ export default async function HomePage() {
             </section>
 
             {/* AI Insights Section */}
-            <section className="py-15 bg-surface/50 text-center">
+            <section className="py-20 bg-surface/50 text-center">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Latest Blogs Section */}
                     {latestBlogs.length > 0 && (
@@ -155,3 +141,4 @@ export default async function HomePage() {
         </div>
     );
 }
+

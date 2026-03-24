@@ -1,33 +1,21 @@
+import { db } from "@/server/db";
+import { articles as blogs } from "@/server/db/schema";
+import { desc } from "drizzle-orm";
 import BlogCard from "@/components/blog-card";
 import BlogGenerator from "@/components/blog-generator";
 import { Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-interface Blog {
-    id: number;
-    title: string;
-    slug: string;
-    excerpt: string;
-    content: string;
-    coverImage: string | null;
-    module: string;
-    author: string | null;
-    readTime: number | null;
-    views: number | null;
-    createdAt: string;
-    updatedAt: string;
-}
-
-async function getBlogs(): Promise<Blog[]> {
+async function getBlogs() {
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-        const res = await fetch(`${baseUrl}/api/blogs?limit=6`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return [];
-        const data = await res.json();
-        return data.data || [];
-    } catch {
+        const results = await db
+            .select()
+            .from(blogs)
+            .orderBy(desc(blogs.createdAt))
+            .limit(12);
+        return results;
+    } catch (error) {
+        console.error("Error fetching blogs:", error);
         return [];
     }
 }
@@ -38,10 +26,10 @@ export const metadata = {
 };
 
 export default async function BlogsPage() {
-    const blogs = await getBlogs();
+    const allBlogs = await getBlogs();
 
     return (
-        <div className="relative py-15 bg-background text-center">
+        <div className="relative py-20 bg-background text-center">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col items-center mb-12">
                     <h1 className="text-4xl font-extrabold text-foreground mb-3 font-serif">AI Blogs</h1>
@@ -52,10 +40,10 @@ export default async function BlogsPage() {
 
                 <BlogGenerator />
 
-                {blogs.length > 0 ? (
+                {allBlogs.length > 0 ? (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                            {blogs.map((blog) => (
+                            {allBlogs.map((blog) => (
                                 <BlogCard
                                     key={blog.id}
                                     id={blog.id}
@@ -98,3 +86,4 @@ export default async function BlogsPage() {
         </div>
     );
 }
+

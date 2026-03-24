@@ -88,24 +88,25 @@ export default function BlogCard({
                         {title}
                     </h2>
 
-                    <p className="text-left text-sm text-muted-foreground mb-5 line-clamp-3 leading-relaxed flex-1">
+                    <p className="text-left text-sm text-muted-foreground mb-6 line-clamp-3 leading-relaxed min-h-[4.5rem]">
                         {excerpt}
                     </p>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-muted/20">
+                    <div className="flex items-center justify-between pt-5 border-t border-muted/20 mt-auto">
                         <div className="flex items-center gap-4">
-                            <span className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                            <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground/80">
                                 <Clock size={12} />
                                 {formatDate(createdAt)}
                             </span>
                         </div>
 
-                        <span className="flex items-center gap-1 text-xs font-bold text-primary group-hover:translate-x-1 transition-transform">
-                            Read
+                        <span className="flex items-center gap-1 text-xs font-black text-primary group-hover:translate-x-1 transition-transform uppercase tracking-wider">
+                            Read Post
                             <ArrowRight size={12} />
                         </span>
                     </div>
                 </div>
+
             </article>
         </a>
     );
