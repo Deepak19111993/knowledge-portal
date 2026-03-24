@@ -1,34 +1,27 @@
+import { db } from "@/server/db";
+import { articles as blogs } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import BlogDetail from "@/components/blog-detail";
 import { notFound } from "next/navigation";
-interface Blog {
-    id: number;
-    title: string;
-    slug: string;
-    excerpt: string;
-    content: string;
-    coverImage: string | null;
-    module: string;
-    author: string | null;
-    readTime: number | null;
-    views: number | null;
-    quiz: any;
-    createdAt: string;
-    updatedAt: string;
-}
 
-async function getBlog(id: string): Promise<Blog | null> {
+async function getBlog(id: string) {
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-        const res = await fetch(`${baseUrl}/api/blogs/${id}`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.data || null;
-    } catch {
+        const blogId = parseInt(id);
+        if (isNaN(blogId)) return null;
+
+        const results = await db
+            .select()
+            .from(blogs)
+            .where(eq(blogs.id, blogId))
+            .limit(1);
+
+        return results[0] || null;
+    } catch (error) {
+        console.error("Error fetching blog:", error);
         return null;
     }
 }
+
 
 export async function generateMetadata({
     params,
