@@ -1,11 +1,12 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
+:root {
   --color-background: #FAF6EF;
   --color-surface: #FFF9F0;
   --color-foreground: #1A0A05;
   --color-card: #FFF9F0;
-  --color-card-hover: #FDF9F2;
   --color-card-border: rgba(196, 168, 130, 0.3);
   --color-card-border-hover: rgba(107, 30, 20, 0.4);
   --color-primary: #6B1E14;
@@ -19,12 +20,9 @@
   --color-gradient-start: #6B1E14;
   --color-gradient-mid: #E8A020;
   --color-gradient-end: #2D6A4F;
-  --font-serif-display: "DM Sans", sans-serif;
-  --font-serif-body: "DM Sans", sans-serif;
   --font-sans: "DM Sans", sans-serif;
-  --font-serif: "DM Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
 }
+
 
 @layer base {
   * {
