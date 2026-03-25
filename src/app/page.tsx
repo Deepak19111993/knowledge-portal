@@ -30,7 +30,7 @@ export default async function HomePage() {
             <div className="absolute inset-0 pointer-events-none -z-10 bg-background opacity-90" />
 
             {/* Hero Section */}
-            <section className="relative pt-10 pb-10 lg:pt-20 lg:pb-20 border-b border-muted/20">
+            <section className="relative pt-10 pb-10 lg:pt-15 lg:pb-15">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 mb-8 animate-float">
@@ -91,10 +91,10 @@ export default async function HomePage() {
             </section>
 
             {/* AI Insights Section */}
-            <section className="py-20 bg-surface/50 text-center">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Latest Blogs Section */}
-                    {latestBlogs.length > 0 && (
+            {latestBlogs.length > 0 && (
+                <section className="py-20 bg-surface/50 text-center">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        {/* Latest Blogs Section */}
                         <div>
                             <div className="flex flex-col sm:flex-row items-center justify-center mb-12 text-center">
                                 <div>
@@ -137,9 +137,9 @@ export default async function HomePage() {
                                 </Link>
                             </div>
                         </div>
-                    )}
-                </div>
-            </section>
+                    </div>
+                </section>
+            )}
         </div>
     );
 }

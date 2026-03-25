@@ -60,7 +60,7 @@ export default function BlogQuiz({ quiz }: BlogQuizProps) {
                 </div>
                 <h3 className="text-3xl font-black font-serif text-foreground mb-4">Test Your Knowledge</h3>
                 <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                    Challenge yourself with a quick 5-question quiz based on the insights you just read. 
+                    Challenge yourself with a quick 5-question quiz based on the insights you just read.
                     Can you get a perfect score?
                 </p>
                 <button
@@ -85,9 +85,9 @@ export default function BlogQuiz({ quiz }: BlogQuizProps) {
                 <div className="mb-8">
                     <p className="text-6xl font-black text-primary mb-2">{score} / {quiz.length}</p>
                     <p className="text-lg text-muted-foreground">
-                        {percentage === 100 ? "Perfect Score! You're a true expert." : 
-                         percentage >= 60 ? "Great job! You have a strong grasp of the topic." : 
-                         "Good effort! Review the article and try again for a higher score."}
+                        {percentage === 100 ? "Perfect Score! You're a true expert." :
+                            percentage >= 60 ? "Great job! You have a strong grasp of the topic." :
+                                "Good effort! Review the article and try again for a higher score."}
                     </p>
                 </div>
                 <button
@@ -107,13 +107,13 @@ export default function BlogQuiz({ quiz }: BlogQuizProps) {
         <div className="mt-20 p-8 sm:p-12 rounded-3xl bg-surface border border-muted/30 shadow-xl relative overflow-hidden">
             {/* Progress Bar */}
             <div className="absolute top-0 left-0 h-2 bg-primary/10 w-full">
-                <div 
+                <div
                     className="h-full bg-primary transition-all duration-500"
                     style={{ width: `${((currentQuestion + 1) / quiz.length) * 100}%` }}
                 />
             </div>
 
-            <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center justify-between mb-5">
                 <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
                     Question {currentQuestion + 1} of {quiz.length}
                 </span>
@@ -122,7 +122,7 @@ export default function BlogQuiz({ quiz }: BlogQuizProps) {
                 </span>
             </div>
 
-            <h3 className="text-2xl sm:text-3xl font-bold font-serif text-foreground mb-8 leading-tight">
+            <h3 className="text-xl sm:text-2xl font-bold font-serif text-foreground mb-8 leading-tight">
                 {question.question}
             </h3>
 
@@ -130,7 +130,7 @@ export default function BlogQuiz({ quiz }: BlogQuizProps) {
                 {question.options.map((option, idx) => {
                     const isCorrect = idx === question.answer;
                     const isSelected = selectedOption === idx;
-                    
+
                     let variant = "default";
                     if (isAnswered) {
                         if (isCorrect) variant = "correct";

@@ -110,7 +110,7 @@ export default function BlogDetail({
 
             {/* Gradient divider */}
             <div
-                className={`h-px bg-muted/30 mb-10`}
+                className={`h-px bg-muted/30 mb-4`}
             />
 
             {/* Blog content */}

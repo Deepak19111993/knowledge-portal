@@ -230,7 +230,7 @@ app.post("/chat", async (c) => {
         }
         
         const result = await chatWithAssistant(history, message);
-        return c.json({ success: true, text: result });
+        return c.json({ success: true, text: result.text });
     } catch (error: any) {
         console.error("Error in chat API:", error);
         return c.json({ success: false, error: "Chat processing failed", details: String(error) }, 500);
