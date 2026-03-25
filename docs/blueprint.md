@@ -6,7 +6,11 @@
 
 ## 🎯 Project Overview
 
-The **Knowledge Portal** is a streamlined AI-powered hub designed to empower communities through localized intelligence and cultural preservation. The platform has been refactored into a focused dual-purpose architecture:
+The **Knowledge Portal** is a streamlined AI-powered hub designed to empower communities through localized intelligence and cultural preservation. 
+
+> "Your gateway to cultural knowledge and AI-powered insights — exploring languages, traditions, and ideas that the world's mainstream platforms overlook."
+
+The platform has been refactored into a focused dual-purpose architecture:
 
 1. **Cultural Exploration & Preservation** — Safeguarding localized traditions, language variants, and historical knowledge. (Route: `/explore`)
 2. **AI-Driven Global Intelligence** — Providing deep, research-backed insights across critical sectors (Agriculture, Health, Education, Sports, Politics) through an automated AI blog engine. (Route: `/blogs`)
@@ -49,23 +53,27 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 - **Section Redirects**: Direct entry points to **Explore Culture** and **AI Blogs**.
 
 ### 2. Culture Explorer (`/explore`)
-- **Smart Dictionary**: Multilingual translation and cultural definitions.
-- **AI Assistant "Koné"**: Conversational AI specializing in local history and linguistics.
-- **Learning Center**: Structured paths for language and cultural mastery.
+- **Smart Dictionary**: Universal translation engine between 50+ languages and Creole variants (`/explore/dictionary`).
+- **AI Assistant "Koné"**: Conversational agent specializing in cultural history and language guidance (`/explore/assistant`).
+- **Learning Tools**: Dynamic flashcard generation and AI grammar correction (`/explore/learning`).
 
 ### 3. AI Insights Blog Engine (`/blogs`)
-- **Curated Feed**: Displays the latest 6 articles across all categories (Agriculture, Health, Education, Sports, Politics).
-- **Automated Generator**: A category-mandatory AI engine that "scrapes" trending news (via RSS) and generates deep-research blogs using Gemini 1.5.
-- **Full Archive**: Dedicated search and listing for all previously generated intelligence reports (`/blogs/all`).
-- **Interactive Learning**: Every blog post features an **AI-Generated Quiz** with real-time scoring to reinforce knowledge retention.
+- **Curated Feed**: Displays the latest research across all categories (Agriculture, Health, Education, Sports, Politics).
+- **Automated Generator**: A sophisticated AI engine that "scrapes" regional and sector-specific trending news (via RSS) to identify high-impact topics.
+- **Expert Personas**: Articles are written using specialized expert personas (e.g., Agricultural Scientist, Clinical Researcher) to ensure authoritative, evidence-based content.
+- **Deep Research Generation**: High-fidelity, 1,200+ word articles featuring structured HTML, data points, and expert insights via Gemini 2.0 Flash.
+- **Multimedia Integration**: Every blog is enhanced with context-aware **YouTube coverage** and photorealistic **Pollinations AI** cover images.
+- **Interactive Knowledge Check**: Built-in 5-question AI-generated quizzes with immediate feedback to reinforce reader comprehension.
+- **Full archive access**: Complete listing of all previously generated intelligence reports.
 
 ---
 
 ## 🤖 AI & Technical Stack
 
-### AI Integrations (Google Gemini 1.5)
+### AI Integrations (Google Gemini 2.0 Flash)
 - **Deep Research Persona**: Gemini acts as a professional analyst, cross-referencing trending news with high-quality knowledge bases.
 - **Interactive Quiz Engine**: Automated generation of 5-question multiple-choice tests for every article.
+- **Multilingual Lexicography**: AI-powered dictionary providing definitions, phonetics, and cultural context.
 - **Visual Synthesis**: Dynamic cover image generation via Pollinations AI integration.
 
 ### Core Technology
@@ -77,15 +85,63 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 
 ---
 
+## 🏗️ Technical Architecture
+
+The Knowledge Portal follows a modern decoupled architecture where the frontend, backend, and AI layers interact seamlessly:
+
+```mermaid
+graph TD
+    subgraph "Client layer (Next.js 15)"
+        UI["React Server & Client Components"]
+        Forms["Interactive Forms & Quizzes"]
+    end
+
+    subgraph "API Layer (Hono.js)"
+        API["Hono Middleware & Routes"]
+        Auth["Authentication / Validation"]
+    end
+
+    subgraph "Service Layer"
+        Gemini["Gemini 2.0 AI Engine"]
+        RSS["RSS Scraper (Trending)"]
+        Pollinations["Pollinations AI (Images)"]
+        YT["YouTube Integration"]
+    end
+
+    subgraph "Data Layer"
+        DB[("PostgreSQL")]
+        Drizzle["Drizzle ORM"]
+    end
+
+    UI <--> API
+    API <--> Gemini
+    API <--> RSS
+    API <--> Drizzle
+    Drizzle <--> DB
+    Gemini --> Pollinations
+    RSS --> Gemini
+    Gemini --> YT
+```
+
+### Data Flow & Lifecycle:
+
+1. **Trend Discovery**: The `RSS Scraper` fetches global news which is analyzed by `Gemini` to identify high-relevance topics.
+2. **Blog Synthesis**: Gemini assumes an `Expert Persona` to generate a 1,200+ word report. The result is structured as JSON, including a dynamic **Pollinations AI** image prompt and **YouTube** video search parameters.
+3. **Persistence**: The structured report and generated quiz are saved to `PostgreSQL` via `Drizzle`.
+4. **Delivery**: The `Next.js` frontend fetches data through `Hono` API routes and renders interactive, SEO-optimized pages.
+
+---
+
 ## 📋 Current Implementation Status
 
-### ✅ Completed (Phase 1 & 2)
 - [x] Full rebranding from legacy "Creole" to **Knowledge Portal**.
-- [x] Refactored Navigation: Home, Explore, AI Blogs.
-- [x] **AI Blog Engine**: Successfully implemented RSS-based discovery and Gemini-powered article writing.
-- [x] **Mandatory Categorization**: Enforced Agriculture, Health, Education, Sports, Politics selection.
-- [x] **Interactive Quizzes**: Database-backed quiz system with real-time feedback UI.
-- [x] **Footer Redesign**: Streamlined 3-column professional footer with quick navigation.
+- [x] **AI Blog Engine**: RSS-based discovery and Gemini 2.0 article writing.
+- [x] **Smart Dictionary**: Multilingual translation engine with 50+ world languages.
+- [x] **AI Assistant "Koné"**: Warm, culturally grounded conversational agent.
+- [x] **Learning & Grammar Tools**: Flashcard generation and professional proofreading.
+- [x] **Interactive Quizzes**: Real-time feedback UI for knowledge retention.
+- [x] **Global Search**: Unified search available in the site header.
+- [x] **Footer Redesign**: Streamlined professional footer with quick navigation.
 
 ### ⏳ In Progress (Phase 3)
 - [ ] **Advanced Learning Center**: Transitioning static courses to interactive AI-tutor sessions.

@@ -43,8 +43,8 @@ export default async function HomePage() {
                         Knowledge Portal
                     </h1>
 
-                    <p className="text-lg sm:text-2xl text-muted-foreground font-serif max-w-3xl mx-auto mb-12 leading-relaxed">
-                        A dual-purpose AI platform dedicated to cultural preservation and empowering communities through high-quality localized research.
+                    <p className="text-lg sm:text-2xl text-muted-foreground font-serif max-w-4xl mx-auto mb-12 leading-relaxed">
+                        "Your gateway to cultural knowledge and AI-powered insights — exploring languages, traditions, and ideas that the world's mainstream platforms overlook."
                     </p>
 
                     {/* Dual Entry Points */}

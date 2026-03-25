@@ -6,8 +6,8 @@ import "./globals.css";
 export const metadata: Metadata = {
     title: "Creole Knowledge Portal — AI-Powered Website",
     description:
-        "Preserving Creole language and solving industry problems globally with AI. Dual-purpose portal for culture and agriculture, healthcare, tech, and legal solutions.",
-    keywords: ["creole", "AI", "language", "culture", "healthcare", "agriculture"],
+        "Your gateway to cultural knowledge and AI-powered insights — exploring languages, traditions, and ideas that the world's mainstream platforms overlook.",
+    keywords: ["creole", "AI", "language", "culture", "knowledge portal", "traditions"],
 };
 
 export default function RootLayout({

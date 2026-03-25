@@ -28,7 +28,7 @@ export default async function AllBlogsPage() {
     const allBlogs = await getAllBlogs();
 
     return (
-        <div className="relative py-20 min-h-screen bg-surface/50">
+        <div className="relative py-20 bg-surface/50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 text-center sm:text-left">
                     <h1 className="text-4xl font-extrabold text-foreground mb-4 font-serif">All Articles</h1>

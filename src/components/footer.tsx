@@ -17,7 +17,7 @@ export default function Footer() {
                                 <span className="text-sm not-italic mt-1 block">— One finger cannot eat okra alone. (Haitian Proverb)</span>
                             </p>
                             <p className="text-sm text-muted-foreground/80 max-w-sm leading-[150%]">
-                                Built with love to preserve localized Knowledge and empower speaking communities to solve real challenges using AI.
+                                Your gateway to cultural knowledge and AI-powered insights — exploring languages, traditions, and ideas that the world's mainstream platforms overlook.
                             </p>
                         </div>
                     </div>
