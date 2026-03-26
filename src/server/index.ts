@@ -69,9 +69,9 @@ app.post("/blogs/:id/view", async (c) => {
 
         await db
             .update(blogs)
-            .set({ 
+            .set({
                 readTime: sql`${blogs.readTime} + 1`, // old field increment fallback? 
-                views: sql`${blogs.views} + 1` 
+                views: sql`${blogs.views} + 1`
             })
             .where(eq(blogs.id, id));
 
@@ -148,7 +148,7 @@ app.post("/blogs/generate", async (c) => {
                 quiz: generated.quiz,
             })
             .returning();
-        
+
         console.log("Blog generation completed successfully");
 
         return c.json({
@@ -159,30 +159,30 @@ app.post("/blogs/generate", async (c) => {
         });
     } catch (error: any) {
         console.error("Error generating blog:", error);
-        
+
         const errorStr = String(error);
         const errorMessage = error instanceof Error ? error.message : errorStr;
         const fullErrorInfo = (errorMessage + " " + errorStr).toLowerCase();
-        
+
         // Comprehensive check for Rate Limit (429)
-        if (fullErrorInfo.includes("429") || 
-            fullErrorInfo.includes("quota exceeded") || 
+        if (fullErrorInfo.includes("429") ||
+            fullErrorInfo.includes("quota exceeded") ||
             fullErrorInfo.includes("too many requests") ||
-            error?.status === 429 || 
+            error?.status === 429 ||
             error?.statusCode === 429 ||
             error?.response?.status === 429) {
-            
-            return c.json({ 
-                success: false, 
+
+            return c.json({
+                success: false,
                 error: "Gemini API Rate Limit Reached. Please wait a minute before trying again.",
                 details: errorMessage
             }, 429);
         }
 
-        return c.json({ 
-            success: false, 
-            error: "Failed to generate blog. Please try again later.", 
-            details: errorMessage 
+        return c.json({
+            success: false,
+            error: "Failed to generate blog. Please try again later.",
+            details: errorMessage
         }, 500);
     }
 });
@@ -206,11 +206,11 @@ app.post("/translate", async (c) => {
     try {
         const body = await c.req.json().catch(() => ({}));
         const { query, fromLang, toLang } = body;
-        
+
         if (!query || typeof query !== "string") {
             return c.json({ success: false, error: "Invalid query" }, 400);
         }
-        
+
         const result = await translateText(query, fromLang || "auto", toLang || "ht");
         return c.json({ success: true, data: result });
     } catch (error: any) {
@@ -224,11 +224,11 @@ app.post("/chat", async (c) => {
     try {
         const body = await c.req.json().catch(() => ({}));
         const { history = [], message } = body;
-        
+
         if (!message || typeof message !== "string") {
             return c.json({ success: false, error: "Invalid message" }, 400);
         }
-        
+
         const result = await chatWithAssistant(history, message);
         return c.json({ success: true, text: result.text });
     } catch (error: any) {
@@ -242,11 +242,11 @@ app.post("/learning/flashcards", async (c) => {
     try {
         const body = await c.req.json().catch(() => ({}));
         const { topic, language = "Haitian Creole" } = body;
-        
+
         if (!topic || typeof topic !== "string") {
             return c.json({ success: false, error: "Invalid topic" }, 400);
         }
-        
+
         const result = await generateFlashcards(topic, language);
         return c.json({ success: true, data: result });
     } catch (error: any) {
@@ -262,11 +262,11 @@ app.post("/fix-grammar", async (c) => {
     try {
         const body = await c.req.json().catch(() => ({}));
         const { text, language = "English" } = body;
-        
+
         if (!text || typeof text !== "string") {
             return c.json({ success: false, error: "Invalid text" }, 400);
         }
-        
+
         const corrected = await fixGrammar(text, language);
         return c.json({ success: true, corrected });
     } catch (error: any) {

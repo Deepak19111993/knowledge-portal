@@ -38,8 +38,8 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 
 | Use | Font | Weight | Notes |
 |-----|------|--------|-------|
-| Headlines | **Playfair Display** | 700–900 | Elegant serif for cultural headlines |
-| Body Text | **Lora** | 400–600 | Warm, readable serif for long-form blogs |
+| Headlines | **DM Sans** | 700–900 | Elegant serif for cultural headlines |
+| Body Text | **DM Sans** | 400–600 | Warm, readable serif for long-form blogs |
 | UI Elements | **DM Sans** | 400–500 | Clean sans for navigation and forms |
 
 ---
@@ -58,7 +58,7 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 - **Learning Tools**: Dynamic flashcard generation and AI grammar correction (`/explore/learning`).
 
 ### 3. AI Insights Blog Engine (`/blogs`)
-- **Curated Feed**: Displays the latest research across all categories (Agriculture, Health, Education, Sports, Politics).
+- **Curated Feed**: Displays the latest research across all categories (Agriculture, Health, Education, Sports, Politics, Technology).
 - **Automated Generator**: A sophisticated AI engine that "scrapes" regional and sector-specific trending news (via RSS) to identify high-impact topics.
 - **Expert Personas**: Articles are written using specialized expert personas (e.g., Agricultural Scientist, Clinical Researcher) to ensure authoritative, evidence-based content.
 - **Deep Research Generation**: High-fidelity, 1,200+ word articles featuring structured HTML, data points, and expert insights via Gemini 2.0 Flash.
@@ -159,6 +159,7 @@ graph TD
 | **Education** | Bilingual curriculum and instructional clarity. | Lesson-plan style structures in blog content. |
 | **Sports** | Global events and community fitness trends. | Real-time news synthesis. |
 | **Politics** | Policy analysis and civic engagement. | Neutral, analytical reporting. |
+| **Technology** | IT industry, software engineering, and digital transformation. | Technical tutorials + Emerging tech analysis. |
 
 ---
 

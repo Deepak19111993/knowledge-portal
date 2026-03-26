@@ -11,6 +11,7 @@ const CATEGORIES = [
     "Education",
     "Sports",
     "Politics",
+    "Technology",
 ];
 
 export default function BlogGenerator() {

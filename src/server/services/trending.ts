@@ -54,6 +54,10 @@ const CATEGORY_SOURCES: Record<string, RSSFeedSource[]> = {
         { name: "Education Week", url: "https://www.edweek.org/rss/all-content.xml" },
         { name: "Inside Higher Ed", url: "https://www.insidehighered.com/rss/news" },
     ],
+    "Technology": [
+        { name: "TechCrunch", url: "https://techcrunch.com/feed/" },
+        { name: "Wired", url: "https://www.wired.com/feed/rss" },
+    ],
 };
 
 function parseRSSItems(xml: string): { title: string; link: string; thumbnail?: string | null }[] {

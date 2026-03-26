@@ -23,70 +23,38 @@ export async function generateBlogFromTopic(
 ): Promise<GeneratedBlog> {
     const model = genAI.getGenerativeModel({
         model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+        generationConfig: {
+            responseMimeType: "application/json",
+            maxOutputTokens: 8192,
+        },
     });
-
-    // const categoryInstruction = requestedCategory
-    //     ? `IMPORTANT: you are a globally recognized expert and professional research analyst specializing in the "${requestedCategory}" sector. You MUST write this blog post from the perspective of an industry authority in "${requestedCategory}". 
-    //     - If "Agriculture": Focus on yield optimization, soil conservation, climate-resilient crops, and ROI for small-scale farmers.
-    //     - If "Health": Focus on preventative measures, evidence-based wellness and nutrition science.
-    //     - If "Education": Focus on pedagogy, future skills (AI/STEM), literacy, and equal access to learning resources.
-    //     - If "Sports": Focus on the physiology of performance, community participation, and the social impact of major sporting events.
-    //     - If "Politics": Focus on public policy impact, civic responsibility, and transparent governance.
-
-    //     The "category" field in your JSON MUST be exactly "${requestedCategory}".`
-    //     : `Choose the most appropriate category for this topic from: Agriculture, Health, Education, Sports, Politics.`;
-
-    // const prompt = `You are an elite Research Journalist. Your goal is to write a blog post that provides IMMENSE VALUE and PRACTICAL KNOWLEDGE to the reader. 
-
-    // Topic: "${topic}"
-    // Source Context: ${source}
-
-    // ${categoryInstruction}
-
-    // CONTENT STRUCTURE REQUIREMENTS (MUST BE IN THE "content" FIELD):
-    // 1. **Deep Analysis**: Start with a sophisticated overview of the topic.
-    // 2. **Key Insights**: Use <h3> headings to break down the most important data points or trends.
-    // 3. **Key Takeaways & Action Plans**: Include a section titled "What This Means For You" or "Actionable Steps". Provide at least 3-4 concrete things the reader can do or understand better based on this information.
-    // 4. **Global Perspective**: Briefly mention how this topic affects different regions (especially looking toward localized impact).
-
-    // CRITICAL QUALITY RULES:
-    // - Act as if you have "scraped" and researched the latest 2026 data and scientific papers.
-    // - NO GENERIC FILLER. Every paragraph must contain a specific fact, expert opinion, or logical deduction.
-    // - Word count: At least 1000 words.
-    // - Tone: Authoritative, educational, and empathetic.
-    // - Format: Use high-quality HTML (<h2>, <h3>, <p>, <ul>, <li>, <blockquote>). 
-    // - NO images in <body>.
-
-    // Return your response as a valid JSON object with these exact fields:
-    // {
-    //   "title": "A sophisticated, high-authority blog title",
-    //   "slug": "url-friendly-slug",
-    //   "excerpt": "A high-value 2-paragraph summary that entices the reader with a clear value proposition.",
-    //   "content": "The full 1000+ word HTML blog content. DO NOT INCLUDE ANY <img> TAGS.",
-    //   "category": "The selected category",
-    //   "coverImage": "https://image.pollinations.ai/prompt/{prompt}?width=1200&height=630&seed={seed} where {prompt} is a VIVID, HIGHLY DESCRIPTIVE prompt about the topic ending with 'photorealistic, 8k resolution, DSLR, cinematic lighting, national geographic style' and {seed} is a random integer.",
-    //   "quiz": [
-    //     {
-    //       "question": "A challenging but fair question about a specific fact in the blog",
-    //       "options": ["Option A", "Option B", "Option C", "Option D"],
-    //       "answer": 0
-    //     }
-    //   ]
-    // }
-    // Return exactly 5 questions in the "quiz" array. Each question MUST have exactly 4 options.`;
 
     const categoryInstruction = requestedCategory
         ? `EXPERT PERSONA: You are a globally recognized authority and research analyst with 20+ years of specialization in the "${requestedCategory}" sector. You have published peer-reviewed papers, consulted for international organizations, and your analysis is cited by leading institutions. Write EXCLUSIVELY from this expert perspective.
 
-CATEGORY-SPECIFIC DEPTH REQUIREMENTS:
-- "Agriculture": Ground every insight in yield data (tons/hectare), soil science (pH, NPK ratios), climate adaptation strategies (drought-resistant cultivars, precision irrigation), and farmer ROI. Reference CGIAR, FAO 2025-2026 reports where relevant.
-- "Health": Anchor claims in RCT evidence, meta-analyses, or WHO/CDC 2025-2026 guidelines. Distinguish between correlation and causation. Include biomarkers, dosage ranges, or clinical thresholds where applicable.
-- "Education": Reference PISA scores, UNESCO learning poverty data, and pedagogical frameworks (Bloom's Taxonomy, UDL). Connect to future workforce demands — AI literacy, STEM gaps, and equity in access.
-- "Sports": Integrate exercise physiology metrics (VO2 max, lactate threshold), biomechanics, injury epidemiology, and the socioeconomic ripple effects of major sporting events on host communities.
-- "Politics": Analyze policy mechanisms, legislative frameworks, stakeholder incentives, and governance transparency indices. Avoid partisan framing; favor structural and institutional analysis.
+CATEGORY-SPECIFIC DEPTH REQUIREMENTS
+Apply the relevant category framework whenever a query falls into one of the domains below. For queries that span multiple categories, layer the applicable frameworks. For queries that fall outside all listed categories, default to evidence-based reasoning with clearly cited sources and explicit distinction between established consensus and contested claims.
+
+Agriculture
+Ground every insight in quantitative yield data (tons/hectare), soil science parameters (pH ranges, NPK ratios, organic matter percentages), and climate adaptation strategies (drought-resistant cultivars, precision irrigation protocols, agroforestry integration). Farmer ROI must be contextualized against input costs, market access, and subsistence vs. commercial scale. Cite CGIAR, FAO, or IFAD reports published 2024–2026 when available — do not invoke these institutions as general authority without a specific finding.
+
+Health
+Anchor all claims in RCT evidence, systematic reviews, or meta-analyses. Explicitly distinguish between correlation and causation. Where clinical thresholds exist (e.g., HbA1c ≥ 6.5% for diabetes diagnosis, LDL targets by cardiovascular risk tier), state them with units. Reference WHO or CDC guidelines published 2024–2026 for disease management recommendations. For nutritional or pharmacological claims, include dosage ranges, bioavailability considerations, and contraindications where clinically significant.
+
+Education
+Reference PISA scores, UNESCO Learning Poverty Index, and OECD education data where relevant. Connect pedagogical strategies to established frameworks — Bloom's Taxonomy for cognitive depth, Universal Design for Learning (UDL) for equity and access. Link educational outcomes to future workforce demands: AI literacy gaps, STEM pipeline disparities, and credential vs. competency debates. Quantify equity dimensions (urban–rural gaps, gender parity indices, disability inclusion rates) wherever data exists.
+
+Sports
+Integrate exercise physiology metrics (VO₂ max, lactate threshold, rate of perceived exertion) and biomechanical analysis (force vectors, movement efficiency, injury mechanism) to ground performance claims. Cite injury epidemiology data (incidence per 1,000 athlete-hours) when discussing injury risk. When covering major sporting events, analyze socioeconomic ripple effects on host communities — infrastructure ROI, displacement, labor conditions, and legacy use of facilities — drawing on post-event economic assessments rather than pre-event projections.
+
+Politics
+Analyze through policy mechanisms, legislative frameworks, stakeholder incentive structures, and institutional design — not partisan alignment. Quantify governance quality using established indices: Freedom House, V-Dem, Transparency International Corruption Perceptions Index, or the World Bank Governance Indicators. When a policy is contested, map the structural arguments on each side without editorializing. Distinguish between normative claims (what should happen) and empirical claims (what does happen or has happened), and flag when these are conflated in the source material.
+
+Technology
+Ground insights in system design trade-offs — latency vs. throughput, consistency vs. availability (CAP theorem), scalability vs. operational complexity. Reference architectural patterns (microservices, event-driven, CQRS, serverless) with their documented failure modes, not just their benefits. For performance claims, cite benchmark data or engineering postmortems from credible sources (Google SRE literature, AWS architecture blog, ThoughtWorks Technology Radar, Stack Overflow Developer Survey). For emerging technologies (LLMs, quantum computing, ZK-proofs, edge AI), distinguish between production-grade capabilities and research-stage claims. Explain complex concepts with technical precision first, then accessible analogy — not the reverse.
 
 The "category" field in your JSON MUST be exactly: "${requestedCategory}".`
-        : `Analyze the topic and assign EXACTLY ONE category from this list: Agriculture, Health, Education, Sports, Politics. Choose based on the primary subject matter and where it delivers the most reader value.`;
+        : `Analyze the topic and assign EXACTLY ONE category from this list: Agriculture, Health, Education, Sports, Politics, Technology. Choose based on the primary subject matter and where it delivers the most reader value.`;
 
     const prompt = `You are an elite Research Journalist with the credibility of a Harvard professor and the clarity of a bestselling author. Your mission: produce a blog post so rich in verified insight that readers bookmark it, share it, and return to it.
 
@@ -183,28 +151,15 @@ Return a SINGLE valid JSON object. No markdown fences. No text before or after. 
         contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
     const response = result.response;
-    const text = response.text();
-    console.log("Raw Gemini Response:", text);
-
-    // Clean up potential markdown formatting
-    let cleanedText = text.trim();
-    if (cleanedText.startsWith("```json")) {
-        cleanedText = cleanedText.slice(7);
-    }
-    if (cleanedText.startsWith("```")) {
-        cleanedText = cleanedText.slice(3);
-    }
-    if (cleanedText.endsWith("```")) {
-        cleanedText = cleanedText.slice(0, -3);
-    }
-    console.log("Cleaned Text for JSON Parsing:", cleanedText);
+    const text = response.text().trim();
+    console.log("Gemini JSON Response:", text);
 
     try {
-        const parsed: GeneratedBlog = JSON.parse(cleanedText);
+        const parsed: GeneratedBlog = JSON.parse(text);
         return parsed;
     } catch (parseError) {
         console.error("JSON Parse Error in gemini.ts:", parseError);
-        console.error("Attempted to parse:", cleanedText);
+        console.error("Attempted to parse:", text);
         throw parseError;
     }
 }
@@ -455,16 +410,19 @@ export interface Flashcard {
 export async function generateFlashcards(topic: string, language: string): Promise<Flashcard[]> {
     const model = genAI.getGenerativeModel({
         model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+        generationConfig: {
+            responseMimeType: "application/json",
+        },
     });
 
     const prompt = `Generate 5 structured vocabulary flashcards to help someone learn ${language}. The overall topic should be: ${topic}. 
 
-Return ONLY a valid JSON array of objects with these exact fields:
+Return a valid JSON array of objects with these exact fields:
 [
   {
     "word": "The word or short phrase in ${language}",
     "translation": "The English translation",
-    "phonetic": "Phonetic pronunciation (e.g. [kuh-lah-loo])",
+    "phonetic": "Phonetic pronunciation (e.g. $[kuh-lah-loo])",
     "example": "A simple example sentence in ${language} showing usage"
   }
 ]`;
@@ -473,17 +431,13 @@ Return ONLY a valid JSON array of objects with these exact fields:
         contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
     const response = result.response;
-    const text = response.text();
-
-    let cleanedText = text.trim();
-    if (cleanedText.startsWith("```json")) cleanedText = cleanedText.slice(7);
-    if (cleanedText.startsWith("```")) cleanedText = cleanedText.slice(3);
-    if (cleanedText.endsWith("```")) cleanedText = cleanedText.slice(0, -3);
+    const text = response.text().trim();
 
     try {
-        return JSON.parse(cleanedText) as Flashcard[];
+        return JSON.parse(text) as Flashcard[];
     } catch (parseError) {
         console.error("Flashcards parse error:", parseError);
+        console.error("Attempted to parse:", text);
         throw new Error("Failed to parse flashcards result");
     }
 }
