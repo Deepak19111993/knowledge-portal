@@ -1,18 +1,18 @@
 # 🌿 Knowledge Portal — AI-Powered Website Blueprint
 
-> A comprehensive guide to features, functionality, design system, and AI integrations for a modern localized knowledge, cultural, and global intelligence platform.
+> A comprehensive guide to features, functionality, design system, and AI integrations for a modern localized knowledge and global intelligence platform.
 
 ---
 
 ## 🎯 Project Overview
 
-The **Knowledge Portal** is a streamlined AI-powered hub designed to empower communities through localized intelligence and cultural preservation. 
+The **Knowledge Portal** is a streamlined AI-powered hub designed to empower communities through localized intelligence and knowledge preservation. 
 
-> "Your gateway to cultural knowledge and AI-powered insights — exploring languages, traditions, and ideas that the world's mainstream platforms overlook."
+> "Your gateway to knowledge and AI-powered insights — exploring languages, traditions, and ideas that the world's mainstream platforms overlook."
 
 The platform has been refactored into a focused dual-purpose architecture:
 
-1. **Cultural Exploration & Preservation** — Safeguarding localized traditions, language variants, and historical knowledge. (Route: `/explore`)
+1. **Exploration & Preservation** — Safeguarding localized traditions, language variants, and historical knowledge. (Route: `/explore`)
 2. **AI-Driven Global Intelligence** — Providing deep, research-backed insights across critical sectors (Agriculture, Health, Education, Sports, Politics) through an automated AI blog engine. (Route: `/blogs`)
 
 The portal serves as a bridge between traditional wisdom and modern AI capabilities, ensuring that vital information is accessible, accurate, and interactive.
@@ -21,7 +21,7 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 
 ## 🎨 Design System
 
-### Color Palette
+### Color Palette 
 
 | Role | Color Name | Hex | Usage |
 |------|-----------|-----|-------|
@@ -35,14 +35,65 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 | Accent | Caribbean Teal | `#1B7A7A` | Info states, specialized actions |
 
 ### Typography
-
-| Use | Font | Weight | Notes |
-|-----|------|--------|-------|
-| Headlines | **DM Sans** | 700–900 | Elegant serif for cultural headlines |
-| Body Text | **DM Sans** | 400–600 | Warm, readable serif for long-form blogs |
-| UI Elements | **DM Sans** | 400–500 | Clean sans for navigation and forms |
-
+ 
+All text across the site uses **DM Sans** — a clean, modern sans-serif font.
+ 
+| Use | Element Examples | Weight | Size Range | Notes |
+|-----|-----------------|--------|------------|-------|
+| **H1 Headlines** | Hero title, Page titles | 800–900 | 48px–72px | Heaviest weight, maximum impact, uppercase or title case |
+| **H2 Headlines** | Section titles, Blog titles | 700 | 32px–40px | Bold, clear hierarchy separator |
+| **H3 Headlines** | Card headings, Sub-sections | 600–700 | 22px–28px | Semi-bold, used inside cards and content blocks |
+| **H4 Headlines** | Card headings, Sub-sections | 600–700 | 22px–28px | Semi-bold, used inside cards and content blocks |
+| **H5 Headlines** | Card headings, Sub-sections | 600–700 | 22px–28px | Semi-bold, used inside cards and content blocks |
+| **H6 Headlines** | Card headings, Sub-sections | 600–700 | 22px–28px | Semi-bold, used inside cards and content blocks |
+| **Body / Blog Text** | Article paragraphs, descriptions | 400 | 16px–18px | Regular weight, optimized line-height (~1.7) for readability |
+| **Navigation & UI Buttons** | Nav links, CTA buttons | 500–600 | 14px–16px | Medium weight, letter-spacing slightly increased for clarity |
+| **Card Titles & Metadata** | Blog card title, date, read time | 600 (title) / 400 (meta) | 16px–20px (title) / 12px–14px (meta) | Title semi-bold; metadata regular with muted color (`#C4A882`) |
+| **Captions & Tags** | Category badges, image captions | 500 | 11px–13px | Uppercase + letter-spacing for badge style; sentence case for captions |
+| **Footer Text** | Footer links, copyright, tagline | 400 | 13px–14px | Regular weight, muted tone, reduced opacity or sandstone color |
+ 
 ---
+ 
+### Font Loading (Next.js)
+ 
+```ts
+// app/layout.tsx
+import { DM_Sans } from 'next/font/google'
+ 
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-dm-sans',
+})
+```
+ 
+### Tailwind CSS Mapping
+ 
+```js
+// tailwind.config.ts
+fontFamily: {
+  sans: ['var(--font-dm-sans)', 'sans-serif'],
+}
+
+```
+ 
+### Usage Reference
+ 
+```
+H1  → text-5xl md:text-7xl font-black        (800–900)
+H2  → text-3xl md:text-4xl font-bold         (700)
+H3  → text-xl md:text-2xl font-semibold      (600)
+H4  → text-xl md:text-xl font-semibold      (600)
+H5  → text-xl md:text-lg font-semibold      (600)
+H6  → text-xl md:text-md font-semibold      (600)
+Body → text-base md:text-lg font-normal      (400)
+Nav  → text-sm md:text-base font-medium      (500)
+Card Title → text-lg font-semibold           (600)
+Meta → text-xs font-normal text-[#C4A882]    (400)
+Tag  → text-xs font-medium uppercase tracking-wide (500)
+Footer → text-sm font-normal                 (400)
+
+```
 
 ## 🏗️ Website Structure
 
@@ -50,12 +101,11 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 - **Hero Section**: High-impact branding with the "Knowledge Portal" identity.
 - **Mission Statement**: Focused on preserving localized knowledge and empowering communities via AI.
 - **Latest Insights**: A curated grid of the newest AI-generated blog posts.
-- **Section Redirects**: Direct entry points to **Explore Culture** and **AI Blogs**.
+- **Section Redirects**: Direct entry points to **Explore** and **AI Blogs**.
 
-### 2. Culture Explorer (`/explore`)
+### 2. Explore (`/explore`)
 - **Smart Dictionary**: Universal translation engine between 50+ languages and Creole variants (`/explore/dictionary`).
-- **AI Assistant "Koné"**: Conversational agent specializing in cultural history and language guidance (`/explore/assistant`).
-- **Learning Tools**: Dynamic flashcard generation and AI grammar correction (`/explore/learning`).
+- **AI Assistant "Koné"**: Conversational agent specializing in knowledge and language guidance (`/explore/assistant`).
 
 ### 3. AI Insights Blog Engine (`/blogs`)
 - **Curated Feed**: Displays the latest research across all categories (Agriculture, Health, Education, Sports, Politics, Technology).
@@ -73,7 +123,7 @@ The portal serves as a bridge between traditional wisdom and modern AI capabilit
 ### AI Integrations (Google Gemini 2.0 Flash)
 - **Deep Research Persona**: Gemini acts as a professional analyst, cross-referencing trending news with high-quality knowledge bases.
 - **Interactive Quiz Engine**: Automated generation of 5-question multiple-choice tests for every article.
-- **Multilingual Lexicography**: AI-powered dictionary providing definitions, phonetics, and cultural context.
+- **Multilingual Lexicography**: AI-powered dictionary providing definitions, phonetics, and context.
 - **Visual Synthesis**: Dynamic cover image generation via Pollinations AI integration.
 
 ### Core Technology
@@ -129,24 +179,6 @@ graph TD
 2. **Blog Synthesis**: Gemini assumes an `Expert Persona` to generate a 1,200+ word report. The result is structured as JSON, including a dynamic **Pollinations AI** image prompt and **YouTube** video search parameters.
 3. **Persistence**: The structured report and generated quiz are saved to `PostgreSQL` via `Drizzle`.
 4. **Delivery**: The `Next.js` frontend fetches data through `Hono` API routes and renders interactive, SEO-optimized pages.
-
----
-
-## 📋 Current Implementation Status
-
-- [x] Full rebranding from legacy "Creole" to **Knowledge Portal**.
-- [x] **AI Blog Engine**: RSS-based discovery and Gemini 2.0 article writing.
-- [x] **Smart Dictionary**: Multilingual translation engine with 50+ world languages.
-- [x] **AI Assistant "Koné"**: Warm, culturally grounded conversational agent.
-- [x] **Learning & Grammar Tools**: Flashcard generation and professional proofreading.
-- [x] **Interactive Quizzes**: Real-time feedback UI for knowledge retention.
-- [x] **Global Search**: Unified search available in the site header.
-- [x] **Footer Redesign**: Streamlined professional footer with quick navigation.
-
-### ⏳ In Progress (Phase 3)
-- [ ] **Advanced Learning Center**: Transitioning static courses to interactive AI-tutor sessions.
-- [ ] **Global Search**: Unified indexing across the dictionary and the growing blog archive.
-- [ ] **Offline PWA Support**: Enabling cached access to core health and agriculture guides.
 
 ---
 

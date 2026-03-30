@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { db } from "@/server/db";
 import { articles as blogs } from "@/server/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
-import { generateBlogFromTopic, translateText, chatWithAssistant, generateFlashcards, fixGrammar } from "@/server/services/gemini";
+import { generateBlogFromTopic, translateText, chatWithAssistant } from "@/server/services/gemini";
 import { getRandomTrendingTopic, getTrendingTopics } from "@/server/services/trending";
 
 const fixPollinationsUrls = (content: string) => {
@@ -237,40 +237,4 @@ app.post("/chat", async (c) => {
     }
 });
 
-// POST /api/learning/flashcards — Generate study materials
-app.post("/learning/flashcards", async (c) => {
-    try {
-        const body = await c.req.json().catch(() => ({}));
-        const { topic, language = "Haitian Creole" } = body;
-
-        if (!topic || typeof topic !== "string") {
-            return c.json({ success: false, error: "Invalid topic" }, 400);
-        }
-
-        const result = await generateFlashcards(topic, language);
-        return c.json({ success: true, data: result });
-    } catch (error: any) {
-        console.error("Error generating flashcards:", error);
-        return c.json({ success: false, error: "Flashcard generation failed", details: String(error) }, 500);
-    }
-});
-
 export default app;
-
-// POST /api/fix-grammar — Fix grammar for a text
-app.post("/fix-grammar", async (c) => {
-    try {
-        const body = await c.req.json().catch(() => ({}));
-        const { text, language = "English" } = body;
-
-        if (!text || typeof text !== "string") {
-            return c.json({ success: false, error: "Invalid text" }, 400);
-        }
-
-        const corrected = await fixGrammar(text, language);
-        return c.json({ success: true, corrected });
-    } catch (error: any) {
-        console.error("Error fixing grammar:", error);
-        return c.json({ success: false, error: "Grammar correction failed", details: String(error) }, 500);
-    }
-});

@@ -1,4 +1,4 @@
-import { BookOpen, Languages, Bot, GraduationCap } from "lucide-react";
+import { BookOpen, Languages, Bot } from "lucide-react";
 import Link from "next/link";
 
 export default function CulturePage() {
@@ -17,7 +17,7 @@ export default function CulturePage() {
                     A universal smart dictionary, historical encyclopedia, and community repository of idiomatic expressions, proverbs, and traditional knowledge.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto text-left">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 max-w-6xl mx-auto text-left">
                     {/* Dictionary */}
                     <div className="bg-surface border border-muted/30 rounded-2xl p-8 hover:shadow-lg transition-all group">
                         <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
@@ -50,21 +50,6 @@ export default function CulturePage() {
                         </Link>
                     </div>
 
-                    {/* Learning Center */}
-                    <div className="bg-surface border border-muted/30 rounded-2xl p-8 hover:shadow-lg transition-all group">
-                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
-                            <GraduationCap size={24} />
-                        </div>
-                        <h3 className="text-xl font-bold font-serif text-foreground mb-3">
-                            Learning
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-6">
-                            Structured language courses with flashcards, pronunciation trainers, and personalized AI tutoring.
-                        </p>
-                        <Link href="/explore/learning" className="text-primary font-bold text-sm hover:underline inline-flex items-center gap-1">
-                            Start Learning
-                        </Link>
-                    </div>
                 </div>
 
             </div>
