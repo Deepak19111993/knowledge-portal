@@ -156,7 +156,8 @@ export async function generateBlogFromTopic(
         OUTPUT FORMAT
         ━━━━━━━━━━━━━━━━━━━━
 
-        Return a SINGLE valid JSON object. No markdown fences. No text before or after. Exact schema:
+        Return a SINGLE valid JSON object. No markdown fences. No text before or after. Exact schema.
+        CRITICAL: Ensure ALL double quotes and newlines within the HTML content are properly JSON-escaped (e.g., use \\" for quotes inside HTML tags and \\n for newlines) to prevent parsing errors!
 
         {
         "title": "A sophisticated, specific, high-authority title (max 70 chars, includes a number or power word)",
@@ -179,10 +180,25 @@ export async function generateBlogFromTopic(
     });
     const response = result.response;
     const text = response.text().trim();
-    console.log("Gemini JSON Response:", text);
+
+    // Defensive clean — completely strip markdown code blocks if present
+    const cleanedText = text
+        .replace(/^```json\s*/i, "")
+        .replace(/^```\s*/i, "")
+        .replace(/\s*```$/i, "")
+        // Sometimes Gemini returns control characters unescaped, leading to JSON parse errors
+        // specifically unescaped tabs and actual newlines inside strings if it hallucinates formatting.
+        .replace(/[\u0000-\u001F]+/g, (match) => {
+            // keep actual newlines formatting the JSON structure, but clean up bad control characters
+            if (match.includes('\n') || match.includes('\r')) return match;
+            return '';
+        })
+        .trim();
+
+    console.log("Gemini JSON Response:", cleanedText.substring(0, 500) + "... [TRUNCATED]");
 
     try {
-        const parsed: GeneratedBlog = JSON.parse(text);
+        const parsed: GeneratedBlog = JSON.parse(cleanedText);
         return parsed;
     } catch (parseError) {
         console.error("JSON Parse Error in gemini.ts:", parseError);

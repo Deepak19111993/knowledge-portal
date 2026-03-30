@@ -60,7 +60,26 @@ export default function BlogGenerator() {
     };
 
     return (
-        <div className="bg-surface border border-muted/30 shadow-sm rounded-3xl p-6 sm:p-8 mb-12 relative overflow-hidden">
+        <>
+            {/* Full Screen Loader Overlay */}
+            {isGenerating && (
+                <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-md transition-all duration-300">
+                    <div className="flex flex-col items-center justify-center p-8 bg-surface rounded-3xl shadow-2xl border border-muted/50 max-w-sm w-full mx-4 text-center animate-in fade-in zoom-in-95">
+                        <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 relative">
+                            <Sparkles size={32} className="text-primary animate-pulse" />
+                            <div className="absolute inset-0 rounded-2xl border-4 border-primary/20 border-t-primary animate-spin" />
+                        </div>
+                        <h2 className="text-2xl font-bold font-serif text-foreground mb-3">
+                            Generating Blog...
+                        </h2>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                            Our AI agents are comprehensively researching the web and writing a tailored article. This usually takes 10 to 15 seconds.
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            <div className="bg-surface border border-muted/30 shadow-sm rounded-3xl p-6 sm:p-8 mb-12 relative overflow-hidden">
             {/* Background glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
@@ -127,5 +146,6 @@ export default function BlogGenerator() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
