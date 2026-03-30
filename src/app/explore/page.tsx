@@ -1,5 +1,14 @@
 import { BookOpen, Languages, Bot } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Explore Knowledge",
+    description: "A universal smart dictionary and community repository of idiomatic expressions, proverbs, and traditional knowledge.",
+    alternates: {
+        canonical: "/explore",
+    },
+};
 
 export default function CulturePage() {
     return (

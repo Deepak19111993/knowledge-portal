@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { db } from "@/server/db";
 import { articles as blogs } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -27,14 +28,43 @@ export async function generateMetadata({
     params,
 }: {
     params: Promise<{ id: string }>;
-}) {
+}): Promise<Metadata> {
     const { id } = await params;
     const blog = await getBlog(id);
     if (!blog) return { title: "Blog Not Found" };
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog-website-ten-chi.vercel.app';
+    const ogImage = blog.coverImage || `${baseUrl}/og-image.png`;
+
     return {
-        title: `${blog.title} — TrendPulse`,
+        title: `${blog.title} | Creole Knowledge Portal`,
         description: blog.excerpt,
+        openGraph: {
+            title: blog.title,
+            description: blog.excerpt,
+            url: `${baseUrl}/blog/${id}`,
+            type: "article",
+            publishedTime: blog.createdAt.toISOString(),
+            modifiedTime: blog.updatedAt.toISOString(),
+            authors: [blog.author || "Admin"],
+            images: [
+                {
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: blog.title,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: blog.title,
+            description: blog.excerpt,
+            images: [ogImage],
+        },
+        alternates: {
+            canonical: `/blog/${id}`,
+        },
     };
 }
 
