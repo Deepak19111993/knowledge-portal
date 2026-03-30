@@ -47,7 +47,7 @@ export default function BlogGenerator() {
             }
 
             // Navigate to the newly generated blog post
-            router.push(`/blog/${data.data.id}`);
+            router.push(`/blog/${data.data.slug}`);
 
             // Reset selection
             setSelectedCategory(null);
@@ -115,7 +115,7 @@ export default function BlogGenerator() {
                         {isGenerating ? (
                             <>
                                 <Loader2 size={16} className="animate-spin" />
-                                Generating with Gemini...
+                                Generating blog...
                             </>
                         ) : (
                             <>
