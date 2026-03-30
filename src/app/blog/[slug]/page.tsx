@@ -5,15 +5,14 @@ import { eq } from "drizzle-orm";
 import BlogDetail from "@/components/blog-detail";
 import { notFound } from "next/navigation";
 
-async function getBlog(id: string) {
+async function getBlog(slug: string) {
     try {
-        const blogId = parseInt(id);
-        if (isNaN(blogId)) return null;
+        if (!slug) return null;
 
         const results = await db
             .select()
             .from(blogs)
-            .where(eq(blogs.id, blogId))
+            .where(eq(blogs.slug, slug))
             .limit(1);
 
         return results[0] || null;
@@ -27,10 +26,10 @@ async function getBlog(id: string) {
 export async function generateMetadata({
     params,
 }: {
-    params: Promise<{ id: string }>;
+    params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-    const { id } = await params;
-    const blog = await getBlog(id);
+    const { slug } = await params;
+    const blog = await getBlog(slug);
     if (!blog) return { title: "Blog Not Found" };
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog-website-ten-chi.vercel.app';
@@ -42,7 +41,7 @@ export async function generateMetadata({
         openGraph: {
             title: blog.title,
             description: blog.excerpt,
-            url: `${baseUrl}/blog/${id}`,
+            url: `${baseUrl}/blog/${slug}`,
             type: "article",
             publishedTime: blog.createdAt.toISOString(),
             modifiedTime: blog.updatedAt.toISOString(),
@@ -63,7 +62,7 @@ export async function generateMetadata({
             images: [ogImage],
         },
         alternates: {
-            canonical: `/blog/${id}`,
+            canonical: `/blog/${slug}`,
         },
     };
 }
@@ -71,10 +70,10 @@ export async function generateMetadata({
 export default async function BlogPage({
     params,
 }: {
-    params: Promise<{ id: string }>;
+    params: Promise<{ slug: string }>;
 }) {
-    const { id } = await params;
-    const blog = await getBlog(id);
+    const { slug } = await params;
+    const blog = await getBlog(slug);
 
     if (!blog) {
         notFound();

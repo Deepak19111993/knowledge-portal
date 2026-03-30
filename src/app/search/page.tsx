@@ -123,6 +123,7 @@ export default async function SearchPage({
                                 <BlogCard
                                     key={blog.id}
                                     id={blog.id}
+                                    slug={blog.slug}
                                     title={blog.title}
                                     excerpt={blog.excerpt}
                                     category={blog.module || "Intelligence"}

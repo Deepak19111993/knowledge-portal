@@ -43,6 +43,7 @@ export default async function AllBlogsPage() {
                             <BlogCard
                                 key={blog.id}
                                 id={blog.id}
+                                slug={blog.slug}
                                 title={blog.title}
                                 excerpt={blog.excerpt}
                                 category={blog.module || "Culture"}

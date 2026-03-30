@@ -116,6 +116,7 @@ export default async function HomePage() {
                                     <BlogCard
                                         key={blog.id}
                                         id={blog.id}
+                                        slug={blog.slug}
                                         title={blog.title}
                                         excerpt={blog.excerpt}
                                         category={blog.module || "Culture"}

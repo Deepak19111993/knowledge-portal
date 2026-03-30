@@ -8,12 +8,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Fetch dynamic routes (e.g., articles)
     const allArticles = await db.select({
-        id: articles.id,
+        slug: articles.slug,
         updatedAt: articles.updatedAt,
     }).from(articles).orderBy(desc(articles.createdAt));
 
-    const articleUrls = allArticles.map((article: { id: number; updatedAt: Date }) => ({
-        url: `${baseUrl}/blog/${article.id}`,
+    const articleUrls = allArticles.map((article: { slug: string; updatedAt: Date }) => ({
+        url: `${baseUrl}/blog/${article.slug}`,
         lastModified: article.updatedAt,
         changeFrequency: 'weekly' as const,
         priority: 0.8,

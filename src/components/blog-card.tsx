@@ -5,6 +5,7 @@ import { Eye, Clock, ArrowRight } from "lucide-react";
 
 interface BlogCardProps {
     id: number;
+    slug: string;
     title: string;
     excerpt: string;
     category: string;
@@ -27,6 +28,7 @@ const categoryColors: Record<string, string> = {
 
 export default function BlogCard({
     id,
+    slug,
     title,
     excerpt,
     category,
@@ -39,7 +41,7 @@ export default function BlogCard({
         categoryColors[category] || "text-primary bg-primary/10 border border-primary/20";
 
     return (
-        <a href={`/blog/${id}`} className="group block h-full">
+        <a href={`/blog/${slug}`} className="group block h-full">
             <article className="bg-surface border border-muted/30 rounded-3xl overflow-hidden hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
 
                 {/* Cover image area */}
