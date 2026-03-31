@@ -179,13 +179,22 @@ export async function generateBlogFromTopic(
         contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
     const response = result.response;
-    const text = response.text().trim();
+    const text = response.text();
+    
+    // Log for debugging
+    console.log("Gemini Blog Raw Response (Preview):", text.substring(0, 500) + (text.length > 500 ? "..." : ""));
 
-    // Defensive clean — completely strip markdown code blocks if present
-    const cleanedText = text
-        .replace(/^```json\s*/i, "")
-        .replace(/^```\s*/i, "")
-        .replace(/\s*```$/i, "")
+    // Robust JSON extraction - finds the first { and the last }
+    const firstBrace = text.indexOf('{');
+    const lastBrace = text.lastIndexOf('}');
+
+    if (firstBrace === -1 || lastBrace === -1) {
+        console.error("No JSON object found in blog response text:", text);
+        throw new Error("Failed to parse blog response: No JSON object found");
+    }
+
+    // Extraction + cleanup
+    let cleanedText = text.substring(firstBrace, lastBrace + 1)
         // Sometimes Gemini returns control characters unescaped, leading to JSON parse errors
         // specifically unescaped tabs and actual newlines inside strings if it hallucinates formatting.
         .replace(/[\u0000-\u001F]+/g, (match) => {
@@ -195,14 +204,11 @@ export async function generateBlogFromTopic(
         })
         .trim();
 
-    console.log("Gemini JSON Response:", cleanedText.substring(0, 500) + "... [TRUNCATED]");
-
     try {
         const parsed: GeneratedBlog = JSON.parse(cleanedText);
         return parsed;
     } catch (parseError) {
-        console.error("JSON Parse Error in gemini.ts:", parseError);
-        console.error("Attempted to parse:", text);
+        console.error("Blog JSON Parse Error. Cleaned text snippet:", cleanedText.substring(0, 500) + "...");
         throw parseError;
     }
 }
@@ -294,20 +300,74 @@ export async function translateText(query: string, fromLang: string, toLang: str
         contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
 
-    const text = result.response.text().trim();
+    const responseText = result.response.text();
+    
+    // Log for debugging in case of future issues
+    console.log("Gemini Translation Raw Response:", responseText.substring(0, 500) + (responseText.length > 500 ? "..." : ""));
 
-    // Defensive clean — belt-and-suspenders in case responseMimeType is ignored
-    const cleanedText = text
-        .replace(/^```json\s*/i, "")
-        .replace(/^```\s*/i, "")
-        .replace(/\s*```$/i, "")
-        .trim();
+    // Robust JSON extraction - finds the first { and the last }
+    const firstBrace = responseText.indexOf('{');
+    const lastBrace = responseText.lastIndexOf('}');
+
+    if (firstBrace === -1 || lastBrace === -1) {
+        console.error("No JSON object found in response text:", responseText);
+        throw new Error(`Failed to parse translation result: No JSON object found`);
+    }
+
+    const cleanedText = responseText.substring(firstBrace, lastBrace + 1).trim();
 
     try {
         return JSON.parse(cleanedText) as TranslationResult;
     } catch (parseError) {
-        console.error("Translation parse error. Raw response:", text);
+        console.error("Translation parse error. Cleaned text:", cleanedText);
         throw new Error(`Failed to parse translation result: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
+    }
+}
+
+export async function fixGrammar(text: string, language: string): Promise<string> {
+    const model = genAI.getGenerativeModel({
+        model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+        generationConfig: {
+            responseMimeType: "application/json",
+        },
+    });
+
+    const prompt = `You are a world-class editor and professional linguist with deep expertise in 50+ languages, including major world languages and several Creole/Patois dialects.
+    
+    TASK: Correct the grammar, spelling, and punctuation of the provided text while strictly preserving its original meaning and tone (e.g. keep informal text informal, keep Creole in Creole).
+    
+    TEXT TO CORRECT: "${text}"
+    LANGUAGE: ${language}
+
+    RULES:
+    1. Only fix grammatical errors, capitalization, and punctuation. 
+    2. DO NOT rewrite the content to be "better" — keep the user's natural style.
+    3. If the input is already correct, return it as-is.
+    4. For Creole dialects: Ensure orthography is consistent with standard usage for that specific dialect (e.g., Haitian Creole vs. Mauritian Creole).
+
+    OUTPUT: Return a SINGLE valid JSON object with the corrected text in the "corrected" field. 
+    { "corrected": "fixed string here" }`;
+
+    const result = await model.generateContent({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+    });
+
+    const responseText = result.response.text();
+
+    const firstBrace = responseText.indexOf('{');
+    const lastBrace = responseText.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1) {
+        return text; // Fallback
+    }
+
+    const cleanedText = responseText.substring(firstBrace, lastBrace + 1).trim();
+
+    try {
+        const parsed = JSON.parse(cleanedText);
+        return parsed.corrected || text;
+    } catch (e) {
+        console.error("Grammar fix parse error:", e);
+        return text;
     }
 }
 

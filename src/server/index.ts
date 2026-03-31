@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { db } from "@/server/db";
 import { articles as blogs } from "@/server/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
-import { generateBlogFromTopic, translateText, chatWithAssistant } from "@/server/services/gemini";
+import { generateBlogFromTopic, translateText, chatWithAssistant, fixGrammar } from "@/server/services/gemini";
 import { getRandomTrendingTopic, getTrendingTopics } from "@/server/services/trending";
 
 const fixPollinationsUrls = (content: string) => {
@@ -234,6 +234,24 @@ app.post("/chat", async (c) => {
     } catch (error: any) {
         console.error("Error in chat API:", error);
         return c.json({ success: false, error: "Chat processing failed", details: String(error) }, 500);
+    }
+});
+
+// POST /api/fix-grammar — Correct grammar of text
+app.post("/fix-grammar", async (c) => {
+    try {
+        const body = await c.req.json().catch(() => ({}));
+        const { text, language } = body;
+
+        if (!text || typeof text !== "string") {
+            return c.json({ success: false, error: "Invalid text" }, 400);
+        }
+
+        const corrected = await fixGrammar(text, language || "auto");
+        return c.json({ success: true, corrected });
+    } catch (error: any) {
+        console.error("Error in grammar fix API:", error);
+        return c.json({ success: false, error: "Grammar fix failed", details: String(error) }, 500);
     }
 });
 

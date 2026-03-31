@@ -5,11 +5,11 @@ import { Search, ArrowRightLeft, Sparkles, BookOpen, Volume2 } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 
 const LANGUAGES = [
@@ -151,10 +151,10 @@ export default function DictionaryPage() {
                                 </SelectContent>
                             </Select>
                         </div>
-                        
-                        <Button 
-                            type="button" 
-                            variant="ghost" 
+
+                        <Button
+                            type="button"
+                            variant="ghost"
                             onClick={() => {
                                 // Swap logic if auto is not selected
                                 if (fromLang !== 'auto') {
@@ -171,7 +171,7 @@ export default function DictionaryPage() {
                         </Button>
 
                         <div className="flex-1 flex justify-end">
-                             <Select value={toLang} onValueChange={setToLang}>
+                            <Select value={toLang} onValueChange={setToLang}>
                                 <SelectTrigger className="w-[180px] sm:w-[220px] font-bold border-none shadow-none focus:ring-0 text-foreground bg-transparent text-lg justify-end [&>span]:mr-2">
                                     <SelectValue placeholder="Target Language" />
                                 </SelectTrigger>
@@ -188,10 +188,10 @@ export default function DictionaryPage() {
 
                     {/* Translation Panels */}
                     <div className="grid grid-cols-1 md:grid-cols-2 min-h-[400px]">
-                        
+
                         {/* LEFT: Input Area */}
                         <div className="p-6 relative border-b md:border-b-0 md:border-r border-muted/30 flex flex-col bg-background">
-                            <Textarea 
+                            <Textarea
                                 rows={8}
                                 className="w-full h-full bg-transparent text-2xl sm:text-3xl text-foreground focus-visible:outline-none resize-none placeholder:text-muted-foreground/40 border-none p-0 pr-16 focus-visible:ring-0 shadow-none leading-relaxed flex-1"
                                 placeholder="Enter text to translate..."
@@ -200,9 +200,9 @@ export default function DictionaryPage() {
                             />
                             {query && (
                                 <div className="absolute top-4 right-4 flex items-center gap-1">
-                                    <Button 
-                                        type="button" 
-                                        variant="ghost" 
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
                                         onClick={handleFixGrammar}
                                         disabled={fixLoading}
                                         title="Fix Grammar"
@@ -215,13 +215,13 @@ export default function DictionaryPage() {
                                     </Button>
                                 </div>
                             )}
-                            
+
                             <div className="flex justify-between items-end mt-4 pt-4">
                                 <span className="text-xs text-muted-foreground font-medium">
                                     {query.length} / 500 characters
                                 </span>
-                                <Button 
-                                    onClick={handleTranslate} 
+                                <Button
+                                    onClick={handleTranslate}
                                     disabled={!query || loading}
                                     className="px-8 py-6 bg-primary text-white rounded-full font-bold text-sm hover:bg-primary-light transition-colors disabled:opacity-50 flex items-center gap-2 shadow-md w-full sm:w-auto"
                                 >
@@ -276,7 +276,7 @@ export default function DictionaryPage() {
                                                 </p>
                                             </div>
                                         )}
-                                        
+
                                         {result.example && (
                                             <div className="p-4 bg-muted/5 rounded-xl border border-muted/20">
                                                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Example</h3>
